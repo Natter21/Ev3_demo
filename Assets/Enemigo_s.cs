@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class Enemigo_s : MonoBehaviour
 {
     public Transform player;
@@ -29,7 +29,7 @@ public class Enemigo_s : MonoBehaviour
 
         float distancia = Vector3.Distance(transform.position, player.position);
 
-        // --- Movimiento con NavMeshAgent ---
+        // Movimiento  NavMeshAgent 
         if (distancia <= distanciaDeteccion && PuedeVerAlJugador())
         {
             agente.SetDestination(player.position);
@@ -39,10 +39,10 @@ public class Enemigo_s : MonoBehaviour
             agente.ResetPath();
         }
 
-        // --- Animación de caminar (Base Layer) ---
+        // caminar
         anim.SetFloat("Speed", agente.velocity.magnitude);
 
-        // --- Ataque ---
+        // Ataque 
         if (distancia <= distanciaAtaque && Time.time - ultimoAtaque > tiempoEntreAtaques)
         {
             Atacar();
@@ -57,7 +57,7 @@ public class Enemigo_s : MonoBehaviour
         if (indiceCapaAtaque >= 0)
         {
             // El nombre del estado debe ser EXACTO al que aparece en la capa (por ejemplo "Attack")
-            anim.Play("Attack", indiceCapaAtaque, 0f);
+            anim.Play("Zombie Attack", indiceCapaAtaque, 0f);
         }
 
         // Hacer daño al jugador
