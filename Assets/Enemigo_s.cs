@@ -12,21 +12,33 @@ public class Enemigo_s : MonoBehaviour
     Animator anim;
     float ultimoAtaque;
 
-    int indiceCapaAtaque; // índice de la capa "AtaqueLayer"
+    int indiceCapaAtaque; // AtaqueLayer
 
+    VidaJugador vidaJugador; // VidaJugador
     void Start()
     {
         agente = GetComponent<UnityEngine.AI.NavMeshAgent>();
         anim = GetComponent<Animator>();
 
-        // Busca el índice de la capa por su nombre
+        // AtaqueLayer
         indiceCapaAtaque = anim.GetLayerIndex("AtaqueLayer");
+
+        if (player != null)
+        {
+            vidaJugador = player.GetComponent<VidaJugador>();
+        }
     }
 
     void Update()
     {
         if (player == null) return;
 
+        if (vidaJugador != null && vidaJugador.estaMuerto) // para cuandoa el enemigo este muerto
+        {
+            agente.ResetPath();
+            anim.SetFloat("Speed", 0f);
+            return;
+        }
         float distancia = Vector3.Distance(transform.position, player.position);
 
         // Movimiento  NavMeshAgent 
@@ -51,39 +63,44 @@ public class Enemigo_s : MonoBehaviour
 
     void Atacar()
     {
+        if (vidaJugador != null && vidaJugador.estaMuerto)
+            return;
+
+
         ultimoAtaque = Time.time;
 
-        // Reproducir animación "Attack" en la capa de ataque
+        //ANIMACION ATAQUE
         if (indiceCapaAtaque >= 0)
         {
-            // El nombre del estado debe ser EXACTO al que aparece en la capa (por ejemplo "Attack")
+
             anim.Play("Zombie Attack", indiceCapaAtaque, 0f);
         }
 
-        // Hacer daño al jugador
-        VidaJugador vida = player.GetComponent<VidaJugador>();
-        if (vida != null)
+        // daño jugador
+        //VidaJugador vida = player.GetComponent<VidaJugador>();
+
+        if (vidaJugador != null)
         {
-            vida.RecibirDaño(daño);
+            vidaJugador.RecibirDaño(daño);
         }
     }
 
-    // --- Detección del jugador con Raycast ---
+    // Raycast
     bool PuedeVerAlJugador()
     {
-        // Dirección desde el enemigo hacia el jugador
-        Vector3 origen = transform.position + Vector3.up * 1.5f; // un poco arriba del suelo
+        // Dirección 
+        Vector3 origen = transform.position + Vector3.up * 1.5f;
         Vector3 direccion = (player.position - transform.position).normalized;
 
         Ray ray = new Ray(origen, direccion);
         RaycastHit hit;
 
-        // Solo para debug: dibuja el rayo en la escena
+        // rayo en la escena
         Debug.DrawRay(origen, direccion * distanciaDeteccion, Color.red);
 
         if (Physics.Raycast(ray, out hit, distanciaDeteccion))
         {
-            // Si lo primero que golpea el rayo es el player → lo ve
+            // ve al player
             if (hit.transform == player)
             {
                 return true;

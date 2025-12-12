@@ -1109,7 +1109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4f32f58f8f03e9a40b13c264eaecb816, type: 3}
       propertyPath: m_Name
-      value: SM_Prop_Barricade_03
+      value: Pared
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

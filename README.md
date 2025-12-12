@@ -1,4 +1,6 @@
-Integrantes: Natalia Marileo - Constanza Perez
-EVALUACION II: Personaje animado
+EVALUACION III: Preparar enemigo para interactuar y hacerle frente a nuestro player.
 
-Revisar este repositorio, el anterior tuvo problema en el merge, se eliminaron el arma y el movimiento
+Integrantes: Natalia Marileo - Constanza Perez
+
+
+
